@@ -1,33 +1,29 @@
 import sys
-class dsu:
-    def __init__(self, n):
-        self.par = [i for i in range(n)]
-        self.sz = [1 for i in range(n)]
-        self.num_sets = n
-    def find(self, a):
-        if self.par[a] == a:
-            return a
-        self.par[a] = self.find(self.par[a])
-        return self.par[a]
-    def union(self, a, b):
-        a = self.find(a)
-        b = self.find(b)
-        if a != b:
-            if self.sz[a] < self.sz[b]:
-                a, b = b, a
-            self.par[b] = a
-            self.sz[a] += self.sz[b]
-            self.num_sets -= 1
+import math
 class solution:
     def __init__(self) -> None:
         pass
     def solve(self, input, output) -> None:
+        t = int(input())
+        for _ in range(t):
+            self.solve_case(input, output)
+        
+    def solve_case(self, input, output) -> None:
         n = int(input())
-        dsu_ = dsu(n)
         ar = list(map(int, input().split()))
-        for i in range(n):
-            dsu_.union(i, ar[i] - 1)
-        print(dsu_.num_sets, file=output)
+        ans = 0
+        max_iter = int(math.log2(n) + 10)
+        for iteration in range(max_iter):
+            for i in range(n - 1):
+                if ar[i] > ar[i + 1]:
+                    dif = ar[i] - ar[i + 1]
+                    ar[i] -= dif // 2
+                    ar[i + 1] += dif // 2
+                    if dif % 2 != 0:
+                        ar[i] -= 1
+                        ar[i + 1] += 1
+        ans = max(ar) - min(ar)
+        output.write(f"{ans}\n")
 
 if __name__ == "__main__":
     s = solution()

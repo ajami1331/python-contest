@@ -11,9 +11,10 @@ class dsu:
     def union(self, a, b):
         a = self.find(a)
         b = self.find(b)
-        if a != b:
-            if self.sz[a] < self.sz[b]:
-                a, b = b, a
-            self.par[b] = a
-            self.sz[a] += self.sz[b]
-            self.num_sets -= 1
+        if a == b:
+            return
+        if self.sz[a] < self.sz[b]:
+            a, b = b, a
+        self.par[b] = a
+        self.sz[a] += self.sz[b]
+        self.num_sets -= 1
