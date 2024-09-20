@@ -30,6 +30,40 @@ def run_case(tc):
         s.solve(input_file.readline, output_file)
     validate_case(tc)
 
+def recurse_imports(file: str, cache: set) -> str:
+    code = ""
+    if file in cache:
+        return code
+    cache.add(file)
+    with open(file, "r") as f:
+        while True:
+            line = f.readline()
+            if not line:
+                break
+            if line.startswith("import library."):
+                line = line.removeprefix("import ")
+                file_to_import = line.split(" as ")[0]
+                file_to_import = file_to_import.replace(".", "/")
+                code += recurse_imports(f"{file_to_import}.py", cache)
+                continue
+            elif line.startswith("from library."):
+                line = line.removeprefix("from ")
+                file_to_import = line.split(" import ")[0]
+                file_to_import = file_to_import.replace(".", "/")
+                code += recurse_imports(f"{file_to_import}.py", cache)
+                continue
+            elif line not in cache and (line.startswith("import ") or line.startswith("from ")):
+                code += line
+                cache.add(line)
+                continue
+            elif line not in cache:
+                code += line
+    return code
+
+def create_file_for_submission():
+    with open("submission.py", "w") as f:
+        f.write(recurse_imports("solution.py", set()))
+
 if __name__ == "__main__":
     s = solution()
     # read a int from test_cases/cnt 
@@ -38,3 +72,4 @@ if __name__ == "__main__":
         cnt = int(f.readline())
     for tc in range(1, cnt + 1):
        run_case(tc)
+    create_file_for_submission()

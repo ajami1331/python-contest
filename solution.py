@@ -1,14 +1,17 @@
 import sys
+import sys
+import library.dsu as dsu
 
 class solution:
     def __init__(self) -> None:
         pass
     def solve(self, input, output) -> None:
         n = int(input())
-        if n % 2 == 0 and n > 2:
-            output.write("YES\n")
-        else:
-            output.write("NO\n")
+        dsu_ = dsu(n)
+        ar = list(map(int, input().split()))
+        for i in range(n):
+            dsu_.union(i, ar[i] - 1)
+        print(dsu_.num_sets, file=output)
 
 if __name__ == "__main__":
     s = solution()
