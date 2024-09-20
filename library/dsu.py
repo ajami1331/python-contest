@@ -3,11 +3,13 @@ class dsu:
         self.par = [i for i in range(n)]
         self.sz = [1 for i in range(n)]
         self.num_sets = n
+
     def find(self, a):
         if self.par[a] == a:
             return a
         self.par[a] = self.find(self.par[a])
         return self.par[a]
+
     def union(self, a, b):
         a = self.find(a)
         b = self.find(b)

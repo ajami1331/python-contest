@@ -2,6 +2,7 @@
 
 from solution import solution
 
+
 def validate_case(tc):
     # compare the output with the expected output
     with open(f"test_cases/{tc}.out", "r") as output_file, open(f"test_cases/{tc}.val", "r") as expected_file:
@@ -24,11 +25,13 @@ def validate_case(tc):
             print(f"Expected: {expected}")
         print("--------------------")
 
+
 def run_case(tc):
-     # read a test case from test_cases/tc{tc}
+    # read a test case from test_cases/tc{tc}
     with open(f"test_cases/{tc}.in", "r") as input_file, open(f"test_cases/{tc}.out", "w") as output_file:
         s.solve(input_file.readline, output_file)
     validate_case(tc)
+
 
 def recurse_imports(file: str, cache: set) -> str:
     code = ""
@@ -60,16 +63,18 @@ def recurse_imports(file: str, cache: set) -> str:
                 code += line
     return code
 
+
 def create_file_for_submission():
     with open("submission.py", "w") as f:
         f.write(recurse_imports("solution.py", set()))
 
+
 if __name__ == "__main__":
     s = solution()
-    # read a int from test_cases/cnt 
+    # read a int from test_cases/cnt
     print("--------------------")
     with open("test_cases/cnt", "r") as f:
         cnt = int(f.readline())
     for tc in range(1, cnt + 1):
-       run_case(tc)
+        run_case(tc)
     create_file_for_submission()

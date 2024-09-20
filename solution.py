@@ -1,29 +1,51 @@
 import sys
-import math
+
 class solution:
+    cnt = 0
+
     def __init__(self) -> None:
         pass
+
     def solve(self, input, output) -> None:
         t = int(input())
         for _ in range(t):
             self.solve_case(input, output)
-        
+
+    def ask(self, input, output, s) -> int:
+        output.write(f"? {s}\n")
+        output.flush()
+        self.cnt += 1
+        return int(input())
+
     def solve_case(self, input, output) -> None:
         n = int(input())
-        ar = list(map(int, input().split()))
-        ans = 0
-        max_iter = int(math.log2(n) + 10)
-        for iteration in range(max_iter):
-            for i in range(n - 1):
-                if ar[i] > ar[i + 1]:
-                    dif = ar[i] - ar[i + 1]
-                    ar[i] -= dif // 2
-                    ar[i + 1] += dif // 2
-                    if dif % 2 != 0:
-                        ar[i] -= 1
-                        ar[i + 1] += 1
-        ans = max(ar) - min(ar)
-        output.write(f"{ans}\n")
+        if n == -1:
+            raise Exception("invalid input")
+        ans = ""
+        self.cnt = 0
+        # going forward
+        while len(ans) < n:
+            # try 0
+            if self.ask(input, output, ans + "0") == 1:
+                ans = ans + "0"
+                continue
+            # try 1
+            if self.ask(input, output, ans + "1") == 1:
+                ans = ans + "1"
+                continue
+            break
+        # going backward
+        while len(ans) < n:
+            # try 0
+            if self.ask(input, output, "0" + ans) == 1:
+                ans = "0" + ans
+                continue
+            else:
+                ans = "1" + ans
+                continue
+        output.write(f"! {ans}\n")
+        output.flush()
+
 
 if __name__ == "__main__":
     s = solution()
