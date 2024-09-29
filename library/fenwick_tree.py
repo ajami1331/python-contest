@@ -34,4 +34,4 @@ class fenwick_tree:
         return pos + 1
 
     def upper_bound(self, x):
-        return self.lower_bound(x + 1)ß
+        return self.lower_bound(x + 1)

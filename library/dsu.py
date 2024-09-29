@@ -1,5 +1,8 @@
 class dsu:
     def __init__(self, n):
+        self.reset(n)
+
+    def reset(self, n):
         self.par = [i for i in range(n)]
         self.sz = [1 for i in range(n)]
         self.num_sets = n

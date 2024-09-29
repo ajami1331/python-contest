@@ -1,51 +1,31 @@
 #!/usr/bin/env python3
 import sys
+import math
+import random
+from library.dsu import dsu
 
 class solution:
-    cnt = 0
-
+    lim = 2 * 10**5
     def __init__(self) -> None:
         pass
-
     def solve(self, input, output) -> None:
         t = int(input())
         for _ in range(t):
             self.solve_case(input, output)
-
-    def ask(self, input, output, s) -> int:
-        output.write(f"? {s}\n")
-        output.flush()
-        self.cnt += 1
-        return int(input())
-
     def solve_case(self, input, output) -> None:
-        n = int(input())
-        if n == -1:
-            raise Exception("invalid input")
-        ans = ""
-        self.cnt = 0
-        # going forward
-        while len(ans) < n:
-            # try 0
-            if self.ask(input, output, ans + "0") == 1:
-                ans = ans + "0"
-                continue
-            # try 1
-            if self.ask(input, output, ans + "1") == 1:
-                ans = ans + "1"
-                continue
-            break
-        # going backward
-        while len(ans) < n:
-            # try 0
-            if self.ask(input, output, "0" + ans) == 1:
-                ans = "0" + ans
-                continue
-            else:
-                ans = "1" + ans
-                continue
-        output.write(f"! {ans}\n")
-        output.flush()
+        n, m = map(int, input().split())
+        ar = [[0 for x in range(12)] for _ in range(n + 2)]
+        ds = dsu(n + 1)
+        for q in range(m):
+            a, d, k = map(int, input().split())
+            ar[a][d] = max(ar[a][d], a + k * d)
+        for i in range(1, n + 1):
+            for j in range(1, 11):
+                if i - j > 0:
+                    ar[i][j] = max(ar[i][j], ar[i - j][j])
+                if i + j <= n and i + j <= ar[i][j]:
+                    ds.union(i, i + j)
+        output.write(str(ds.num_sets - 1) + "\n")
 
 
 if __name__ == "__main__":

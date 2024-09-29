@@ -2,4 +2,9 @@
 
 import random
 
-print(random.randint(1, 100), random.randint(1, 100))
+t = 1
+print(t)
+b = random.randint(0, 100)
+c = random.randint(0, 100)
+d = random.randint(0, 100)
+print(b, c, d)
