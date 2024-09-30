@@ -29,7 +29,7 @@ def validate_case(tc):
 def run_case(tc):
     # read a test case from test_cases/tc{tc}
     with open(f"test_cases/{tc}.in", "r") as input_file, open(f"test_cases/{tc}.out", "w") as output_file:
-        s.solve(input_file.readline, output_file)
+        solution().solve(input_file.readline, output_file)
     validate_case(tc)
 
 
@@ -70,7 +70,6 @@ def create_file_for_submission():
 
 
 if __name__ == "__main__":
-    s = solution()
     # read a int from test_cases/cnt
     print("--------------------")
     with open("test_cases/cnt", "r") as f:

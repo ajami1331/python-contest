@@ -2,31 +2,25 @@
 import sys
 import math
 import random
-from library.dsu import dsu
+from library.segtree import segtree
 
 class solution:
-    lim = 2 * 10**5
+    lim = 2 * 10 ** 5 + 5
     def __init__(self) -> None:
         pass
     def solve(self, input, output) -> None:
-        t = int(input())
-        for _ in range(t):
-            self.solve_case(input, output)
+        self.solve_case(input, output)
     def solve_case(self, input, output) -> None:
-        n, m = map(int, input().split())
-        ar = [[0 for x in range(12)] for _ in range(n + 2)]
-        ds = dsu(n + 1)
-        for q in range(m):
-            a, d, k = map(int, input().split())
-            ar[a][d] = max(ar[a][d], a + k * d)
-        for i in range(1, n + 1):
-            for j in range(1, 11):
-                if i - j > 0:
-                    ar[i][j] = max(ar[i][j], ar[i - j][j])
-                if i + j <= n and i + j <= ar[i][j]:
-                    ds.union(i, i + j)
-        output.write(str(ds.num_sets - 1) + "\n")
-
+        n, q = map(int, input().split())
+        ar = list(map(int, input().split()))
+        st = segtree.from_array(ar, lambda a, b: a + b, 0)
+        for _ in range(q):
+            t, x, y = map(int, input().split())
+            if t == 1:
+                output.write(f"{st.prod(x, y)}\n")
+            else:
+                ar[x] += y
+                st.set(x, ar[x])
 
 if __name__ == "__main__":
     s = solution()
