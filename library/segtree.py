@@ -1,4 +1,4 @@
-class segtree:
+class Segtree:
     def __init__(self, n, op, e):
         self._n = n
         self._log = (n - 1).bit_length()

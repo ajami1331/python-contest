@@ -2,26 +2,59 @@
 import sys
 import math
 import random
-from library.segtree import segtree
+import library.fastio as fastio
+
+def m(x: int) -> int:
+    return 1 << x
+
 
 class solution:
-    lim = 2 * 10 ** 5 + 5
+    lim = 2 * 10**5 + 5
+    end_states = []
+
     def __init__(self) -> None:
         pass
-    def solve(self, input, output) -> None:
-        self.solve_case(input, output)
-    def solve_case(self, input, output) -> None:
-        n, q = map(int, input().split())
-        ar = list(map(int, input().split()))
-        st = segtree.from_array(ar, lambda a, b: a + b, 0)
-        for _ in range(q):
-            t, x, y = map(int, input().split())
-            if t == 1:
-                output.write(f"{st.prod(x, y)}\n")
-            else:
-                ar[x] += y
-                st.set(x, ar[x])
+
+    def solve(self) -> None:
+        self.end_states.append(m(0) | m(1) | m(2))
+        self.end_states.append(m(3) | m(4) | m(5))
+        self.end_states.append(m(6) | m(7) | m(8))
+
+        self.end_states.append(m(0) | m(3) | m(6))
+        self.end_states.append(m(1) | m(4) | m(7))
+        self.end_states.append(m(2) | m(5) | m(8))
+
+        self.end_states.append(m(0) | m(4) | m(8))
+        self.end_states.append(m(6) | m(4) | m(2))
+        n = int(input())
+        for _ in range(n):
+            self.solve_case(_)
+
+    def solve_case(self, cs) -> None:
+        board = 0
+        for x in range(3):
+            line = str(input().strip())
+            for x in range(3):
+                board = board << 1
+                if line[x] == "X":
+                    board |= 1
+        print("Game #{}: ".format(cs + 1), end="")
+        print("Alice" if self.winner(board) else "Bob")
+
+    def winner(self, board):
+        ret = False
+        if self.game_over(board):
+            return True
+        for i in range(9):
+            if (board & m(i)) == 0:
+                ret |= not self.winner(board | m(i))
+        return ret
+
+    def game_over(self, board):
+        for x in self.end_states:
+            if (board & x) == x:
+                return True
+        return False
 
 if __name__ == "__main__":
-    s = solution()
-    s.solve(sys.stdin.buffer.readline, sys.stdout)
+    solution().solve()

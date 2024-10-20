@@ -1,4 +1,4 @@
-class dsu:
+class Dsu:
     def __init__(self, n):
         self.reset(n)
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 from solution import solution
 
 
@@ -29,7 +30,11 @@ def validate_case(tc):
 def run_case(tc):
     # read a test case from test_cases/tc{tc}
     with open(f"test_cases/{tc}.in", "r") as input_file, open(f"test_cases/{tc}.out", "w") as output_file:
-        solution().solve(input_file.readline, output_file)
+        sys.stdin = input_file
+        sys.stdout = output_file
+        solution().solve()
+    sys.stdin = sys.__stdin__
+    sys.stdout = sys.__stdout__
     validate_case(tc)
 
 
